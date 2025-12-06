@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8" />
+  <title>Digital Kuthuvilakku Lighting</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #faf5ff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background: #ffffff;
+      margin: 24px;
+      padding: 24px 20px 32px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 4px;
+      font-size: 1.6rem;
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 1.1rem;
+      color: #4b5563;
+    }
+
+    .subtext {
+      font-size: 0.95rem;
+      color: #6b7280;
+      margin-bottom: 16px;
+    }
+
+    .lamp-wrapper {
+      margin: 16px auto 8px;
+    }
+
+    .lamp-image {
+      max-width: 220px;
+      width: 100%;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-radius: 12px;
+    }
+
+    .lamp-image.lit {
+      transform: scale(1.03);
+      box-shadow: 0 0 30px rgba(248, 180, 0, 0.7);
+    }
+
+    form {
+      margin-top: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    input[type="text"] {
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      font-size: 0.95rem;
+      min-width: 200px;
+      outline: none;
+    }
+
+    input[type="text"]:focus {
+      border-color: #8b5cf6;
+      box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+    }
+
+    button {
+      border-radius: 999px;
+      border: none;
+      padding: 8px 18px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      background: #8b5cf6;
+      color: #ffffff;
+      font-weight: 600;
+      transition: background 0.2s ease, transform 0.1s ease;
+    }
+
+    button:hover {
+      background: #7c3aed;
+      transform: translateY(-1px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .success-message {
+      font-size: 0.9rem;
+      color: #16a34a;
+      min-height: 20px;
+      margin-bottom: 8px;
+    }
+
+    .list-title {
+      margin-top: 20px;
+      margin-bottom: 4px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #4b5563;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+      max-height: 180px;
+      overflow-y: auto;
+      border-radius: 12px;
+      border: 1px dashed #e5e7eb;
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    li {
+      font-size: 0.9rem;
+      padding: 4px 0;
+      border-bottom: 1px solid #f3f4f6;
+    }
+
+    li:last-child {
+      border-bottom: none;
+    }
+
+    .footer-note {
+      margin-top: 14px;
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>தமிழ் திருவிழா டிஜிட்டல் குத்துவிளக்கு ஏற்றுதல்</h1>
+    <h2>Digital Kuthuvilakku Lighting</h2>
+    <p class="subtext">
+      தமிழ் திருவிழாவிற்கு வருகைபுரிந்துள்ள அனைவரும் சேர்ந்தே, குத்துவிளக்கை ஏற்றி விழாவைத் தொடங்குகிறோம்.
+    </p>
+
+    <div class="lamp-wrapper">
+      <!-- 🔁 Replace these image URLs with your own -->
+      <img
+        id="lampImage"
+        class="lamp-image"
+        src="lamp-off.png"
+        alt="Kuthuvilakku"
+      />
+    </div>
+
+    <form id="lampForm">
+      <input
+        type="text"
+        id="nameInput"
+        placeholder="உங்கள் பெயரை எழுதுங்கள் / Enter your name"
+		
+		  />
+      <button type="submit">குத்துவிளக்கு ஏற்றவும்</button>
+    </form>
+
+    <div id="successMessage" class="success-message"></div>
+
+    <p class="list-title">இன்றைய தினம் குத்துவிளக்கை ஏற்றியவர்கள்:</p>
+    <ul id="participantsList">
+      <!-- Names will be added here -->
+    </ul>
+
+    <p class="footer-note">
+      * இது ஒரு குறிக்கோள்: ஒவ்வொருவரும் தங்களின் ஒளியால் விழாவை ஒளிரச் செய்கிறார்கள். *
+    </p>
+  </div>
+  
+    <audio id="lampMusic">
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+  
+  <script>
+    const form = document.getElementById("lampForm");
+    const nameInput = document.getElementById("nameInput");
+    const lampImage = document.getElementById("lampImage");
+    const successMessage = document.getElementById("successMessage");
+    const participantsList = document.getElementById("participantsList");
+	const lampMusic = document.getElementById("lampMusic");
+
+    // 🔁 Change this to your "lamp ON" image
+    const LAMP_LIT_SRC = "lamp-on.png";
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const name = nameInput.value.trim();
+
+      if (!name) {
+        alert("தயவுசெய்து உங்கள் பெயரை உள்ளிடவும்.\nPlease enter your name.");
+        return;
+      }
+
+      // Change lamp to lit
+      lampImage.src = LAMP_LIT_SRC;
+      lampImage.classList.add("lit");
+
+      // Add name to the list
+      const li = document.createElement("li");
+      li.textContent = "💠 " + name;
+      participantsList.appendChild(li);
+
+      // Show success message
+      successMessage.textContent =
+        name + " அவர்கள் குத்துவிளக்கை ஏற்றி வைத்தார்.";
+		
+		
+      // 🎶 Play music
+      lampMusic.play();
+
+      // Clear input
+      nameInput.value = "";
+      nameInput.focus();
+    });
+  </script>
+</body>
+</html>
